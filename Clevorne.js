@@ -1,6 +1,6 @@
 var clevorne = function(pane, data){
 
-    var palette = ["blue", "red", "yellow", "brown", "magenta", "orange", "purple"];
+    var palette = ["blue", "red", "orange", "green", "purple", "orange", "darkturquoise", "deeppink"];
 
     this.paneHeight = pane.getAttribute("height");
     this.paneWidth = pane.getAttribute("width");
