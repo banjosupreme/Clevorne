@@ -35,10 +35,17 @@
    plot1 = new clevorne(panel1, dataset);
    plot2 = new clevorne(panel2, dataset);
    plot3 = new clevorne(panel3, dataset);
-   plot1.drawScatter();
-   plot2.drawLines();
-   plot3.drawLines();
-   plot3.drawScatter();
+   plot1.drawScatter(0,1);
+   
+   
+   plot2.drawLines(0,1);
+   plot2.placeGrid([82,86,90,94,98],[15,18,21,24]);
+   
+   
+   plot3.drawLines(0,1);
+   plot3.drawScatter(0,1);
+   plot3.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]);
+   
    </script>
    
    </body>
