@@ -6,35 +6,23 @@ var clevorne = function(pane, data){
     this.paneWidth = pane.getAttribute("width");
     
    
-    this.getDataBounds = function(){
-        var first = true;
-        for(j = 0; j < dataset.length; ++j){
-            for(k = 0; k < dataset[j].data.length; ++k){            
-                if(first){
-                    this.xmin = this.xmax = dataset[j].data[k][0];
-                    this.ymin = this.ymax = dataset[j].data[k][1];
-                    first = false;
-                }
-                else{
-                    if (dataset[j].data[k][0] < this.xmin){
-                        this.xmin = dataset[j].data[k][0];
-                    }
-                    else if (dataset[j].data[k][0] > this.xmax){
-                        this.xmax = dataset[j].data[k][0];
-                    }            
-                    if (dataset[j].data[k][1] < this.ymin){
-                        this.ymin = dataset[j].data[k][1];
-                    }
-                    else if (dataset[j].data[k][1] > this.ymax){
-                        this.ymax = dataset[j].data[k][1];
-                    }
-            
-                }
-        
-        
+    this.getDataBounds = function(xcol, ycol){
+        this.xmin = this.xmax = dataset.data[0][xcol];
+        this.ymin = this.ymax = dataset.data[0][ycol];
+        for(j = 1; j < dataset.length; ++j){
+            if (dataset.data[j][xcol] < this.xmin){
+                this.xmin = dataset.data[j][xcol];
             }
-    
-        }
+            else if (dataset.data[j][xcol] > this.xmax){
+                this.xmax = dataset.data[j][xcol];
+            }            
+            if (dataset.data[j][ycol] < this.ymin){
+                this.ymin = dataset.data[j][ycol];
+            }
+            else if (dataset.data[j][ycol] > this.ymax){
+                this.ymax = dataset.data[j][ycol];
+            }        
+        }        
     }
    
     this.getDataBounds();
@@ -49,7 +37,20 @@ var clevorne = function(pane, data){
         return 0.06*this.paneHeight + (this.ymax - value)*0.88*this.paneHeight/this.yrange;
     }
     
+    this.initializeGroupsAndColours = function(){
+        
+        this.group = new Array(dataset.data.length);
+        this.colour = new Array(dataset.data.length);
+        
+        for(var j = 0; j < dataset.data.length; ++j){
+            groups[j] = colours[j] = 0;
+        }
+        this.groupLookup = [];
+        this.colourLookup = []; 
 
+    }
+
+    this.initializeGroupsAndColours();
     
     this.drawPoint =  function(x,y,colour){
         var point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -77,13 +78,10 @@ var clevorne = function(pane, data){
         var x1, y1, colour;
         
         for(var j = 0; j < dataset.length; ++j){
-            colour =  palette[j%palette.length];
-        
-            for(var k = 0; k < dataset[j].data.length; ++k){ 
-                x1 = this.mapX(dataset[j].data[k][xcol]);
-                y1 = this.mapY(dataset[j].data[k][ycol]);   
-                this.drawPoint(x1, y1, colour);
-            }
+            colour =  palette[this.colour[j]%palette.length];
+            x1 = this.mapX(dataset.data[j][xcol]);
+            y1 = this.mapY(dataset.data[j][ycol]);   
+            this.drawPoint(x1, y1, colour);          
         }
     }
     
@@ -91,7 +89,7 @@ var clevorne = function(pane, data){
         var x1, x2, y1, y2, colour;
         
         for(var j = 0; j < dataset.length; ++j){
-            colour =  palette[j%palette.length];
+            colour =  palette[this.colour[j]%palette.length];
             x1 = this.mapX(dataset[j].data[0][xcol]);
             y1 = this.mapY(dataset[j].data[0][ycol]);                
             for(var k = 1; k < dataset[j].data.length; ++k){ 
@@ -125,5 +123,41 @@ var clevorne = function(pane, data){
             this.drawLine(gridLowX, y1, gridHighX, y1, "lightgray");
         }
     }
-    
+
+    this.indexOf = function(value, array){
+        for(var j = 0; j < array.length; ++j){
+            if (array[j] == value){
+                return j;
+            }
+        }
+        return -1;
+    }
+
+    this.groupBy = function(groupCol){
+        var testVal;
+        for(var j = 0; j < dataset.data.length; ++j){
+            testVal = dataset.data[j][groupCol];
+            if (indexOf(testVal, groupMap) == -1){
+                this.group[j] = groupMap.length;
+                groupMap.push(testVal);
+            }
+            else{
+                this.group[j] = testVal;
+            }
+        }
+    }
+
+    this.colourBy = function(colourCol){
+        //same as groupBy above. Copy pasted. Really should cut down on this code duplication.
+        var testVal;
+        for(var j = 0; j < dataset.data.length; ++j){
+            testVal = dataset.data[j][colourCol];
+            if (indexOf(testVal, colourMap) == -1){
+                this.colour[j] = colourMap.length;
+                colourMap.push(testVal);
+            }
+            else{
+                this.colour[j] = testVal;
+            }
+        }
 } 
