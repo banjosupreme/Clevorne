@@ -27,9 +27,6 @@ var clevorne = function(pane, data, xcol, ycol){
     }
    
     this.getDataBounds();
-    /*console.log("**********");
-    console.log(this.ymax);
-    console.log(this.ymin);*/
     this.yrange = this.ymax - this.ymin;
     this.xrange = this.xmax - this.xmin;
     
@@ -152,14 +149,8 @@ var clevorne = function(pane, data, xcol, ycol){
         
         for(var j = 0; j < dataset.data.length; ++j){
             colour =  palette[this.colour[j]%palette.length];
-            /*console.log(dataset.data[j][xcol]);
-            console.log(dataset.data[j][ycol]);*/
             x1 = this.mapX(dataset.data[j][xcol]);
             y1 = this.mapY(dataset.data[j][ycol]);  
-            /*console.log(dataset.data[j]);
-            console.log(x1);
-            console.log(y1);
-            console.log(colour);*/
             this.drawPoint(x1, y1, colour);          
         }
     }
@@ -170,10 +161,6 @@ var clevorne = function(pane, data, xcol, ycol){
         var prevx = [];
         var prevy = [];
 
-        
-        console.log(this.groupLookup.length);
-        console.log(this.groupLookup);
-        console.log(this.group);
         for (var j = 0; j < this.groupLookup.length; ++j){
             prevx.push(false);
             prevy.push(false);
