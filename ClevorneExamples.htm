@@ -29,19 +29,26 @@
     
    dataset = {data: [["Aguirre", 82, 17.3],["Aguirre", 83, 20.5],["Aguirre", 84, 23.5],["Aguirre", 85, 21.3],["Aguirre", 86, 19.2],["Aguirre", 87, 22.1],["Aguirre", 88, 21.9],["Aguirre", 89, 16.4],["Aguirre", 90, 15.8],["Aguirre", 91, 16.7],["Aguirre", 92, 13.7],["Aguirre", 93, 13.7],["Aguirre", 94, 13.1],["Worthy", 83, 17.4],["Worthy", 84, 16.5],["Worthy", 85, 17.0],["Worthy", 86, 20.4],["Worthy", 87, 18.4],["Worthy", 88, 18.2],["Worthy", 89, 19.0],["Worthy", 90, 19.8],["Worthy", 91, 18.1],["Worthy", 92, 16.7],["Worthy", 93, 15.6],["Worthy", 94, 12.8],["Wilkins", 83, 16.6],["Wilkins", 84, 19.2],["Wilkins", 85, 20.9],["Wilkins", 86, 23.3],["Wilkins", 87, 23.5],["Wilkins", 88, 23.7],["Wilkins", 89, 21.8],["Wilkins", 90, 24.6],["Wilkins", 91, 23.5],["Wilkins", 92, 22.2],["Wilkins", 93, 24.3],["Wilkins", 94, 21.4],["Wilkins", 95, 16.3],["Wilkins", 97, 19.6],["Wilkins", 99, 15.4]]};
    
-   plot1 = new clevorne(panel1, dataset);
-   plot2 = new clevorne(panel2, dataset);
-   plot3 = new clevorne(panel3, dataset);
-   plot1.drawScatter(0,1);
+   plot1 = new clevorne(panel1, dataset, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the first plot
+   plot2 = new clevorne(panel2, dataset, 2, 1); //use the 3rd and 2nd columns as x and y respectively for the second plot. 
+   plot3 = new clevorne(panel3, dataset, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
+   
+   plot1.placeGrid([82,86,90,94,98],[15,18,21,24])
+   plot1.colourBy(0); //choose colour by the first column of data
+   plot1.drawScatter(); //draw the scatterplot
+   
+   plot2.placeGrid([15,18,21,24],[82,86,90,94,98]); //place a grid for the 2nd plot
+   plot2.colourBy(0); //colour by the first column of the data
+   plot2.groupBy(0); //group by the first column of the data
+   plot2.drawLines(); //draw line graphs 
    
    
-   plot2.drawLines(0,1);
-   plot2.placeGrid([82,86,90,94,98],[15,18,21,24]);
+   plot3.groupBy(0); //group by the first column of the data
+   plot3.colourBy(0); //colour data points by the first column of the data
+   plot3.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]); //place this grid on the plot
+   plot3.drawLines(1,2); //draw a line graph
+   plot3.drawScatter(1,2); //draw a scatter plot
    
-   
-   plot3.drawLines(0,1);
-   plot3.drawScatter(0,1);
-   plot3.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]);
    
    </script>
    
