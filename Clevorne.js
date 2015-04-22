@@ -6,6 +6,7 @@ var clevorne = function(pane, data, xcol, ycol){
     this.paneWidth = pane.getAttribute("width");
     this.xcol = xcol;
     this.ycol = ycol;
+    this.annotation = false;
    
     this.getDataBounds = function(){
         this.xmin = this.xmax = dataset.data[0][this.xcol];
@@ -40,8 +41,15 @@ var clevorne = function(pane, data, xcol, ycol){
     
 
     
-    this.drawPoint =  function(x,y,colour){
+    this.drawPoint =  function(x,y,colour, infoString){
         var point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        if(infoString!=false)
+        {
+            var info = document.createElementNS("http://www.w3.org/2000/svg","title")
+            info.textContent = infoString;
+            point.appendChild(info);
+        }
+        
         point.setAttribute('cx', x);
         point.setAttribute('cy', y);
         point.setAttribute('r', 6);
@@ -49,6 +57,10 @@ var clevorne = function(pane, data, xcol, ycol){
         point.style.fill = colour;
         point.style.stroke="black";
         point.style.opacity = 1.0;
+        
+        title = typeof title !== 'undefined' ? title : false;
+        
+        
         pane.appendChild(point);
     }
     
@@ -151,7 +163,15 @@ var clevorne = function(pane, data, xcol, ycol){
             colour =  palette[this.colour[j]%palette.length];
             x1 = this.mapX(dataset.data[j][xcol]);
             y1 = this.mapY(dataset.data[j][ycol]);  
-            this.drawPoint(x1, y1, colour);          
+            
+            if(this.annotation){
+                var title = this.annotationFunction(dataset.data[j]);
+                this.drawPoint(x1, y1, colour, title);
+            }
+            else
+            {
+                this.drawPoint(x1, y1, colour);
+            }
         }
     }
     
@@ -180,6 +200,11 @@ var clevorne = function(pane, data, xcol, ycol){
             prevy[this.group[j]] = y2;
         }
 
+    }
+    
+    this.addAnnotation = function(infunc){
+        this.annotation = true;
+        this.annotationFunction = infunc;
     }
     
  
