@@ -1,11 +1,14 @@
 <html>
 <html>
+<head>
 <title>Example page for the Clevorne plotting library</title>
+<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="thecssfile.css">
 <body>
 
 
 
-
+<H1>Clevorne</H1>
 
 
 
@@ -166,7 +169,7 @@
     plot5.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]); //place this grid on the plot        
     plot5.drawLines(1,2); //draw a line graph
     plot5.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})  
-    plot5.drawScatter(1,2); //draw a scatter plot
+    plot5.drawScatter(); //draw a scatter plot
 
 </pre>
 
@@ -182,9 +185,26 @@
     plot5.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]); //place this grid on the plot        
     plot5.drawLines(1,2); //draw a line graph
     plot5.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})  
-    plot5.drawScatter(1,2); //draw a scatter plot
+    plot5.drawScatter(); //draw a scatter plot
 
 </script>
+
+
+<svg id = "panel6" style = "alignment-baseline: central"></svg>
+
+<script>
+    var panel6 = document.getElementById('panel6');
+    panel6.setAttribute("width",0.8*window.innerWidth);
+    panel6.setAttribute("height",0.3*window.innerHeight);
+    panel6.setAttribute("x",20);
+    plot6 = new clevorne(panel6, dataset, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
+    plot6.colourBy(0); //group by the first column of the data
+    plot6.positionBy(0); //colour data points by the first column of the data
+    plot6.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})  
+    plot6.drawBars(); //draw a scatter plot
+
+</script>
+
 
 
    

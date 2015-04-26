@@ -58,11 +58,34 @@ var clevorne = function(pane, data, xcol, ycol){
         point.style.stroke="black";
         point.style.opacity = 1.0;
         
-        title = typeof title !== 'undefined' ? title : false;
+        
         
         
         pane.appendChild(point);
     }
+    
+    this.drawRectangle = function(x,y,width,height,colour,infoString){
+        var rectangle = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        
+        if(infoString!=false)
+        {
+            var info = document.createElementNS("http://www.w3.org/2000/svg","title")
+            info.textContent = infoString;
+            rectangle.appendChild(info);
+        }
+       
+        rectangle.setAttribute('x',x);
+        rectangle.setAttribute('y',y);
+        rectangle.setAttribute('width', width);
+        rectangle.setAttribute('height', height);
+        rectangle.style.fill = colour;
+        rectangle.style.stroke = "black";
+        rectangle.style.opacity = 1.0;
+        pane.appendChild(rectangle);
+        
+    
+    }
+    
     
     this.drawLine = function(x1,y1, x2, y2, colour){
         var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -111,12 +134,14 @@ var clevorne = function(pane, data, xcol, ycol){
         
         this.group = new Array(dataset.data.length);
         this.colour = new Array(dataset.data.length);
+        this.position = new Array(dataset.data.length);
         
         for(var j = 0; j < dataset.data.length; ++j){
             this.group[j] = this.colour[j] = 0;
         }
         this.groupLookup = [];
         this.colourLookup = []; 
+        this.positionLookup = [];
 
     }
 
@@ -124,7 +149,7 @@ var clevorne = function(pane, data, xcol, ycol){
 
 
     this.groupBy = function(groupCol){
-        //same as groupBy above. Copy pasted. Really should cut down on this code duplication.
+        
         var testVal;
         for(var j = 0; j < dataset.data.length; ++j){
             testVal = this.indexOf(dataset.data[j][groupCol], this.groupLookup);
@@ -156,6 +181,23 @@ var clevorne = function(pane, data, xcol, ycol){
         
     }
     
+    this.positionBy = function(positionCol){
+        //again same as the two above. Really should clean this up.
+        var testVal;
+        for(var j = 0; j < dataset.data.length; ++j){
+            testVal = this.indexOf(dataset.data[j][positionCol], this.positionLookup);
+            if (testVal == -1){
+                this.position[j] = this.positionLookup.length;
+                this.positionLookup.push(dataset.data[j][positionCol]);
+            }
+            else{
+                this.position[j] = testVal;
+            }
+        }
+    
+    
+    }
+    
      this.drawScatter = function(){
         var x1, y1, colour;
         
@@ -173,6 +215,73 @@ var clevorne = function(pane, data, xcol, ycol){
                 this.drawPoint(x1, y1, colour);
             }
         }
+    }
+    
+    this.barYScale = function(value, max, range){
+        return 0.06*this.paneHeight + (max - value)*0.88*this.paneHeight/range;
+    }
+    
+    this.barXPos = function(xposition, relPosition, padding, barWidth, indent, numPositions){
+            return indent + xposition*padding + xposition*numPositions*barWidth + relPosition*barWidth;
+    }
+    
+    this.drawBars = function(){
+    
+        var values = [];
+        var padding = 15;
+        
+        var indexOfX = [];
+        var testVal;
+        for(var j = 0; j < dataset.data.length; ++j){
+            testVal = this.indexOf(dataset.data[j][xcol], indexOfX);
+            if(testVal == -1){
+                indexOfX.push(dataset.data[j][xcol]);
+            }
+            
+        }
+        
+        var numPositions = this.positionLookup.length;
+        var numX = indexOfX.length;
+        var barMax = Math.max(0,this.ymax);
+        var barMin = Math.min(0,this.ymin);
+        var barRange = barMax - barMin;
+        
+        
+        var numBars = numPositions*numX;
+        var barWidth = (this.paneWidth*0.8 - (numX-1)*padding)/numBars;
+        var indent = this.paneWidth*0.1;
+        
+        var zeroLoc = this.barYScale(0, barMax, barRange);
+        this.drawLine(0.05*this.paneWidth,zeroLoc, 0.95*this.paneWidth, zeroLoc, "lightgray");
+        
+        
+        
+        
+        var xposition, relPosition, xloc, yloc, height, yval, colour;
+        
+        for(var j =0; j < dataset.data.length; ++j){
+            xposition = this.indexOf(dataset.data[j][xcol], indexOfX);
+            relPosition = this.position[j];
+            xloc = this.barXPos(xposition, relPosition, padding, barWidth, indent, numPositions);
+            yval = dataset.data[j][ycol];
+            colour =  palette[this.colour[j]%palette.length];
+            if(yval >= 0)
+            {
+                yloc = this.barYScale(yval, barMax, barRange);
+                height = zeroLoc - yloc;    
+            }
+            else{
+                yloc = zeroLoc;
+                height = this.barYScale(yval, barMax, barRange) - zeroLoc;
+            }
+            var title = this.annotationFunction(dataset.data[j]);
+            this.drawRectangle(xloc,yloc,barWidth,height,colour,title);
+        }
+        
+        
+        
+    
+    
     }
     
     this.drawLines = function(){
