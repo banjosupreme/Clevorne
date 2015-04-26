@@ -1,4 +1,4 @@
-var clevorne = function(pane, data, xcol, ycol){
+var clevorne = function(pane, dataset, xcol, ycol){
 
     var palette = ["blue", "red", "orange", "green", "purple", "orange", "darkturquoise", "deeppink"];
 
