@@ -8,16 +8,23 @@
 
 
 
-<H1>Clevorne</H1>
+<H1>Clevorne: an in-progress JavaScript graphing library</H1>
 
+I've spent a little time over each of the last few weekends working on a JavaScript library for plotting graphs on the web. 
 
+It's far from complete but I'm putting up this page as the home page for the project as well as a tutorial of sorts.<br>
+
+<a href = "https://github.com/banjosupreme/Clevorne">The code is here (github).</a><br>
+<a href = "roadmap.md">I'll try to keep this file updated about the direction of the project.</a><br>
+
+Anyhow about the library itself ...
 
 <script src="Clevorne.js"></script>
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
 <script>
 
-    dataset = {data: [["Aguirre", 82, 17.3],["Aguirre", 83, 20.5],["Aguirre", 84, 23.5],["Aguirre", 85, 21.3],["Aguirre", 86, 19.2],
+    dataset = {columns: ["Player", "Year", "PER"], data: [["Aguirre", 82, 17.3],["Aguirre", 83, 20.5],["Aguirre", 84, 23.5],["Aguirre", 85, 21.3],["Aguirre", 86, 19.2],
     ["Aguirre", 87, 22.1],["Aguirre", 88, 21.9],["Aguirre", 89, 16.4],["Aguirre", 90, 15.8],["Aguirre", 91, 16.7],["Aguirre", 92, 13.7],
     ["Aguirre", 93, 13.7],["Aguirre", 94, 13.1],["Worthy", 83, 17.4],["Worthy", 84, 16.5],["Worthy", 85, 17.0],["Worthy", 86, 20.4],
     ["Worthy", 87, 18.4],["Worthy", 88, 18.2],["Worthy", 89, 19.0],["Worthy", 90, 19.8],["Worthy", 91, 18.1],["Worthy", 92, 16.7],
@@ -27,8 +34,17 @@
    
    
 </script>
+
+<H3>The Data</H3>
+
+Currently, the libary expects the dataset to be in the form of an object that has a member named <i>data</i>. <i>data</i> is an array of arrays representing the data set. 
+(In the example data set below there is also an array, <i>columns</i> storing the column names but it doesn't get used by any of the code
+written thus far. Eventually, I anticipate the object to have a few other members - both data and functions.)
+
+Below, is an example data set for use in demonstrating the functionality of the library thus far. 
+   
 <pre class="prettyprint">
- dataset = {data: [["Aguirre", 82, 17.3],["Aguirre", 83, 20.5],["Aguirre", 84, 23.5],["Aguirre", 85, 21.3],["Aguirre", 86, 19.2],
+ dataset = {columns: ["Player", "Year", "PER"], data: [["Aguirre", 82, 17.3],["Aguirre", 83, 20.5],["Aguirre", 84, 23.5],["Aguirre", 85, 21.3],["Aguirre", 86, 19.2],
     ["Aguirre", 87, 22.1],["Aguirre", 88, 21.9],["Aguirre", 89, 16.4],["Aguirre", 90, 15.8],["Aguirre", 91, 16.7],["Aguirre", 92, 13.7],
     ["Aguirre", 93, 13.7],["Aguirre", 94, 13.1],["Worthy", 83, 17.4],["Worthy", 84, 16.5],["Worthy", 85, 17.0],["Worthy", 86, 20.4],
     ["Worthy", 87, 18.4],["Worthy", 88, 18.2],["Worthy", 89, 19.0],["Worthy", 90, 19.8],["Worthy", 91, 18.1],["Worthy", 92, 16.7],
@@ -39,7 +55,13 @@
 </pre>
 
 
+<h2>Plotting</h2>
 
+<h3>Scatter Plots</h3>
+
+
+
+<h4>This code:</h4>
 
 <pre class="prettyprint">
 
@@ -54,6 +76,8 @@
 
     
 </pre>
+
+<h4>Produces:</h4> 
 <svg id = "panel1"></svg>
 <script>
     
@@ -69,6 +93,8 @@
     
 </script>
 
+<h4>Slightly different:</h4>
+
 
 
 
@@ -85,8 +111,13 @@
 
 
 </pre>
-
+<h4>And we get:</h4>
 <svg id = "panel2"></svg>
+<br>
+In this 2nd plot the colours were chosen by the 2nd column of the data rather than the 1st column. Not necessarily very enlightening in this instance but it gives an idea of how 
+the <i>colourBy</i> method works.
+
+
 
 <script>
     var panel2 = document.getElementById('panel2');
@@ -100,6 +131,9 @@
 
 </script>
 
+<h3>Line Graphs</h3>
+
+<h4>The code:</h4> 
 
 <pre class="prettyprint">
     var panel3 = document.getElementById('panel3');
@@ -113,7 +147,7 @@
     plot3.drawLines(); //draw line graphs 
 
 </pre>
-
+<h4>The graph</h4>
 <svg id = "panel3"></svg>
 
 <script>
@@ -129,7 +163,7 @@
 
 </script>
 
-
+<h4>Slightly different code:</h4>
 
 <pre class="prettyprint">
     var panel4 = document.getElementById('panel4');
@@ -143,8 +177,10 @@
     plot4.drawLines(); //draw line graphs 
 
 </pre>
+<h4>And we get a different graph</h4>
+<svg id = "panel4"></svg><br>
 
-<svg id = "panel4"></svg>
+Here the x and y variables were switched. (And the size of the svg was set as a square). 
 
 <script>
     var panel4 = document.getElementById('panel4');
@@ -158,22 +194,25 @@
     plot4.drawLines(); //draw line graphs 
 
 </script>
-
+<h4>Code for Scatter Plots and Line Graphs at the same time:</h4>
 <pre class="prettyprint">
     var panel5 = document.getElementById('panel5');
     panel5.setAttribute("width",0.8*window.innerWidth);
     panel5.setAttribute("height",0.3*window.innerHeight);
+    
     plot5 = new clevorne(panel5, dataset, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
     plot5.groupBy(0); //group by the first column of the data
     plot5.colourBy(0); //colour data points by the first column of the data
-    plot5.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]); //place this grid on the plot        
-    plot5.drawLines(1,2); //draw a line graph
-    plot5.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})  
+    plot5.placeGrid([82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99],[15,18,21,24]); //place this grid on the plot
+    plot5.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})    
+    plot5.drawLines(); //draw a line graph
     plot5.drawScatter(); //draw a scatter plot
-
 </pre>
-
+<h4>Gives this graph: </h4>
 <svg id = "panel5"></svg>
+<br>
+
+Here, we've added a call to <i>addAnnotation<i> and you can see the results by hovering over the points in the plot.
 
 <script>
     var panel5 = document.getElementById('panel5');
@@ -189,21 +228,83 @@
 
 </script>
 
+<h3>Bar Charts</h3>
 
-<svg id = "panel6" style = "alignment-baseline: central"></svg>
+
+<h4>The code:</h4>
+<pre class="prettyprint">
+    var panel6 = document.getElementById('panel6');
+    panel6.setAttribute("width",0.8*window.innerWidth);
+    panel6.setAttribute("height",0.3*window.innerHeight);
+    
+    plot6 = new clevorne(panel6, dataset, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
+    plot6.colourBy(0); //group by the first column of the data
+    plot6.positionBy(0); //colour data points by the first column of the data
+    plot6.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})  
+    plot6.drawBars(); //draw the bar chart
+</pre>
+<H4>The chart:</H4>
+<svg id = "panel6"></svg>
+
 
 <script>
     var panel6 = document.getElementById('panel6');
     panel6.setAttribute("width",0.8*window.innerWidth);
     panel6.setAttribute("height",0.3*window.innerHeight);
-    panel6.setAttribute("x",20);
+    
     plot6 = new clevorne(panel6, dataset, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
     plot6.colourBy(0); //group by the first column of the data
-    plot6.positionBy(0); //colour data points by the first column of the data
+    plot6.positionBy(0); //different bars by the first column of the data
     plot6.addAnnotation(function(row){ return "'"+(row[1]-1)+"-'"+(row[1])+" "+(row[0])+" "+(row[2])+" PER";})  
-    plot6.drawBars(); //draw a scatter plot
+    plot6.drawBars(); //draw the bars
 
 </script>
+
+
+
+<h4>Similar code, different data set:</h4>
+
+<pre class="prettyprint">
+    dataset2 = {data: [["Mario", 1, 5],["Mario", 2, 6],["Mario", 3, 7],["Mario", 4, -3],["Mario", 5, 0.5],["Mario", 6, 1],["Mario", 7, -4],
+                  ["Luigi", 1, 4],["Luigi", 2, -3],["Luigi", 3, 6],["Luigi", 4, 6],["Luigi", 5, -0.5],["Luigi", 6, -2],["Luigi", 7, 3],
+                 ["Mariko", 1, 6.5],["Mariko", 2, 4.5],["Mariko", 3, 3],["Mariko", 4, 8],["Mariko", 5, 2], ["Mariko", 6, 3],["Mariko", 7, 4] ]};
+                 
+    var panel7 = document.getElementById('panel7');
+    panel7.setAttribute("width",0.8*window.innerWidth);
+    panel7.setAttribute("height",0.3*window.innerHeight);
+    panel7.setAttribute("x",20);
+    
+    plot7 = new clevorne(panel7, dataset2, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
+    plot7.colourBy(0); //group by the first column of the data
+    plot7.positionBy(0); //colour data points by the first column of the data
+    plot7.addAnnotation(function(row){ return row[0]+": "+row[2]+" (Week "+row[1]+")";})  
+    plot7.drawBars()
+</pre>
+
+<h4>Gives this plot:</h4>
+<svg id = "panel7"></svg>
+
+<script>
+
+
+    dataset2 = {data: [["Mario", 1, 5],["Mario", 2, 6],["Mario", 3, 7],["Mario", 4, -3],["Mario", 5, 0.5],["Mario", 6, 1],["Mario", 7, -4],
+                  ["Luigi", 1, 4],["Luigi", 2, -3],["Luigi", 3, 6],["Luigi", 4, 6],["Luigi", 5, -0.5],["Luigi", 6, -2],["Luigi", 7, 3],
+                 ["Mariko", 1, 6.5],["Mariko", 2, 4.5],["Mariko", 3, 3],["Mariko", 4, 8],["Mariko", 5, 2], ["Mariko", 6, 3],["Mariko", 7, 4] ]};
+                 
+    var panel7 = document.getElementById('panel7');
+    panel7.setAttribute("width",0.8*window.innerWidth);
+    panel7.setAttribute("height",0.3*window.innerHeight);
+    panel7.setAttribute("x",20);
+    
+    plot7 = new clevorne(panel7, dataset2, 1, 2); //use the 2nd and 3rd columns as x and y respectively for the third plot
+    plot7.colourBy(0); //colour by the first column of the data
+    plot7.positionBy(0); //different bars by the first column of the data
+    plot7.addAnnotation(function(row){ return row[0]+": "+row[2]+" (Week "+row[1]+")";})  
+    plot7.drawBars()
+
+</script>
+<br>
+Just did this one to show how negative y values are handled.
 
 
 
