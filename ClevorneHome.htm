@@ -12,10 +12,12 @@
 
 I've spent a little time over each of the last few weekends working on a JavaScript library for plotting graphs on the web. 
 
-It's far from complete but I'm putting up this page as the home page for the project as well as a tutorial of sorts.<br>
+It's far from complete but I'm putting up this page as the home page for the project as well as a tutorial of sorts.
+
+(This is all heavily inspired by <a href = "http://ggplot2.org/">ggplot2</a> and the grammar of graphics.)<br><br>
 
 <a href = "https://github.com/banjosupreme/Clevorne">The code is here (github).</a><br>
-<a href = "roadmap.md">I'll try to keep this file updated about the direction of the project.</a><br>
+<a href = "roadmap.md">I'll try to keep this file updated about the direction of the project.</a><br><br>
 
 Anyhow about the library itself ...
 
@@ -37,11 +39,12 @@ Anyhow about the library itself ...
 
 <H3>The Data</H3>
 
-Currently, the libary expects the dataset to be in the form of an object that has a member named <i>data</i>. <i>data</i> is an array of arrays representing the data set. 
+Currently, the libary expects the dataset to be in the form of an object that has a member named <i>data</i>. <i>data</i> is an array of arrays representing the data set.<br>
+Below, is an example data set for use in demonstrating the functionality of the library thus far.<br>
 (In the example data set below there is also an array, <i>columns</i> storing the column names but it doesn't get used by any of the code
-written thus far. Eventually, I anticipate the object to have a few other members - both data and functions.)
-
-Below, is an example data set for use in demonstrating the functionality of the library thus far. 
+written thus far. Eventually, I anticipate the object to have a few other members - both data and functions. This particular data set gives the Player Efficiency Ratings for 3 former NBA players for each season of their careers.)
+ 
+ 
    
 <pre class="prettyprint">
  dataset = {columns: ["Player", "Year", "PER"], data: [["Aguirre", 82, 17.3],["Aguirre", 83, 20.5],["Aguirre", 84, 23.5],["Aguirre", 85, 21.3],["Aguirre", 86, 19.2],
@@ -212,7 +215,7 @@ Here the x and y variables were switched. (And the size of the svg was set as a 
 <svg id = "panel5"></svg>
 <br>
 
-Here, we've added a call to <i>addAnnotation<i> and you can see the results by hovering over the points in the plot.
+Here, we've added a call to <i>addAnnotation</i> and you can see the results by hovering over the points in the plot.
 
 <script>
     var panel5 = document.getElementById('panel5');
@@ -267,7 +270,8 @@ Here, we've added a call to <i>addAnnotation<i> and you can see the results by h
 <pre class="prettyprint">
     dataset2 = {data: [["Mario", 1, 5],["Mario", 2, 6],["Mario", 3, 7],["Mario", 4, -3],["Mario", 5, 0.5],["Mario", 6, 1],["Mario", 7, -4],
                   ["Luigi", 1, 4],["Luigi", 2, -3],["Luigi", 3, 6],["Luigi", 4, 6],["Luigi", 5, -0.5],["Luigi", 6, -2],["Luigi", 7, 3],
-                 ["Mariko", 1, 6.5],["Mariko", 2, 4.5],["Mariko", 3, 3],["Mariko", 4, 8],["Mariko", 5, 2], ["Mariko", 6, 3],["Mariko", 7, 4] ]};
+                 ["Zelda", 1, 6.5],["Zelda", 2, 4.5],["Zelda", 3, 3],["Zelda", 4, 8],["Zelda", 5, 2], ["Zelda", 6, 3],["Zelda", 7, 4], 
+                 ["Samus", 1, 6.5],["Samus", 2, 4.5],["Samus", 3, 3],["Samus", 4, 8],["Samus", 5, 2], ["Samus", 6, 3],["Samus", 7, 4]]};
                  
     var panel7 = document.getElementById('panel7');
     panel7.setAttribute("width",0.8*window.innerWidth);
@@ -289,7 +293,8 @@ Here, we've added a call to <i>addAnnotation<i> and you can see the results by h
 
     dataset2 = {data: [["Mario", 1, 5],["Mario", 2, 6],["Mario", 3, 7],["Mario", 4, -3],["Mario", 5, 0.5],["Mario", 6, 1],["Mario", 7, -4],
                   ["Luigi", 1, 4],["Luigi", 2, -3],["Luigi", 3, 6],["Luigi", 4, 6],["Luigi", 5, -0.5],["Luigi", 6, -2],["Luigi", 7, 3],
-                 ["Mariko", 1, 6.5],["Mariko", 2, 4.5],["Mariko", 3, 3],["Mariko", 4, 8],["Mariko", 5, 2], ["Mariko", 6, 3],["Mariko", 7, 4] ]};
+                 ["Zelda", 1, 6.5],["Zelda", 2, 4.5],["Zelda", 3, 3],["Zelda", 4, 8],["Zelda", 5, 2], ["Zelda", 6, 3],["Zelda", 7, 4], 
+                 ["Samus", 1, 6.8],["Samus", 2, 4],["Samus", 3, 3],["Samus", 4, 8],["Samus", 5, 2], ["Samus", 6, 2.5],["Samus", 7, 5]]};
                  
     var panel7 = document.getElementById('panel7');
     panel7.setAttribute("width",0.8*window.innerWidth);
