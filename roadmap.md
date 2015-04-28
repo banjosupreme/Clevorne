@@ -7,7 +7,8 @@ List of Features I'd like to add more or less in the order I'd like/expect to ge
     a. Box plots
     b. Histograms
 5. General clean up of existing code.
-6. Have automatic/intelligent grid lines/axes deduced and plotted from the data
-7. Operations to filter, concatenate and join data sets.
+6. Error handling and the addition of sensible default behaviors.
+7. Have automatic/intelligent grid lines/axes deduced and plotted from the data
+8. Operations to filter, concatenate and join data sets.
  
  
